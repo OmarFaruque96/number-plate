@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+*{
+	padding: 0;
+	margin: 0;
+}
+body,h1,h2,h3,h4,h5,h6,p,span,input,button{
+	font-family: 'Montserrat', sans-serif;
+}
+body{
+	/*background: url(../img/banner.jpg);
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 100vh;*/
+}
+body {
+  
+}
+/* title section css here*/
+.site-title{
+  	background: linear-gradient(45deg, #27dbe9, #e3e67d);
+	/*padding: 320px 0;*/
+	text-align: center;
+	height: 100vh;
+    display: table-cell;
+    width: 100vw;
+    vertical-align: middle 
+}
+.title{
+}
+.site-title h1{
+	color: white;
+    font-weight: 600;
+    font-size: 60px;
+}
+.site-title p{
+	letter-spacing: 2px;
+    color: white;
+    font-size: 22px;
+}
+.site-title button{
+	padding: 20px 50px;
+    border: 1px solid white;
+    color: white;
+    font-size: 18px;
+    margin-top: 30px;
+    background: transparent;
+    transition: all 0.45s ease-in-out;
+}
+.site-title button:focus{
+	outline: none;
+}
+.site-title button:hover{
+	background: white;
+	color: black;
+    transition: all 0.45s ease-in-out;
+
+}
+
+form{
+	padding: 40px 50px;
+}
+form input{
+	margin-bottom: 20px;
+}
+
+form .login{
+  	background: linear-gradient(45deg, #27dbe9, #e3e67d);
+
+}
+
+
