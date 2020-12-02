@@ -15,13 +15,37 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style type="">
+  	.overlay{
+  		position: absolute;
+  		top: 0;
+  		right: 0;
+  		bottom: 0;
+  		left: 0;
+  		background-color: rgba(0,0,0,0.75);
+  	}
+  </style>
 </head>
 <body>
 
+
 <div class="container my-4">
-  <h2 >User Data</h2>
-  <p>The .table class adds basic styling (light padding and horizontal dividers) to a table:</p>
-  <a href="adduser.php"><button class="btn btn-md btn-primary my-4">Add New Info</button></a>            
+  <h2 class="text-center">Faulted Vehicle Information</h2>
+  <p class="text-center">All detected user information list:</p>
+            
+  <div>
+  	<form method="POST" action="dashboard.php?do=number">
+  		<div class="form-group">
+  			<input type="text" name="v_number" class="form-control" placeholder="Detected Car number">
+  			<input type="submit" name="number_submit" class="btn btn-md btn-danger" value="Confirm Info">
+  			<button class="btn btn-md btn-danger" style="margin-bottom: 20px;"><a href="dashboard.php?do=Manage" style="color: white;text-decoration: none;">Refresh</a></button>
+  		</div>
+  	</form>
+  	<?php
+
+
+  	?>
+  </div>            
   <table class="table ">
 	  <thead class="thead-dark">
 	    <tr>
@@ -36,8 +60,13 @@
 	  <tbody>
 
 	  	<!--  -->
-	  	<?php 
-			$sql = "SELECT * FROM users INNER JOIN fault_info ON users.number_plate = fault_info.number_plate;";
+	  	<?php
+
+	  		
+  			$do = isset($_GET['do']) ? $_GET['do'] : 'Manage';
+
+  			if($do == 'Manage'){
+  				$sql = "SELECT * FROM users INNER JOIN fault_info ON users.number_plate = fault_info.number_plate;";
 			$result = mysqli_query($conn, $sql);
 			$i = 0;
 
@@ -56,7 +85,6 @@
 
 				?>
 
-
 				<tr>
 			      <th scope="row"><?php echo $i;?></th>
 			      <td><?php echo $name;?></td>
@@ -68,7 +96,27 @@
 
 				<?php
 
+				}
+  			}
+  			if($do == 'number'){
+
+  				if($_SERVER['REQUEST_METHOD'] == 'POST'){
+  					$car_number = $_POST['v_number'];
+  					
+  			$sql = "INSERT INTO fault_info (number_plate) VALUES ('$car_number')";
+			$result = mysqli_query($conn, $sql);
+
+			if($result){
+				header('Location: dashboard.php');
+			}else{
+				echo "Add New User Error!";
 			}
+
+			}
+  				}
+
+  				
+  			
 
 	  	?>
 	  	
@@ -76,7 +124,9 @@
 	  </tbody>
 	</table>
 
-	
+	<div class="my-5">
+		<a href="adduser.php"><button class="btn btn-md btn-primary my-4">Add New User</button></a>  
+	</div>
 
 </body>
 </html>
