@@ -91,29 +91,77 @@
 			      <td><?php echo $nId;?></td>
 			      <td><?php echo $email;?></td>
 			      <td><?php echo $number_plate;?></td>
-			      <td><?php echo "Pending"?></td>
+			      <td>
+			      	<a href="dashboard.php?do=mail&userid=<?php echo $email;?>" class="btn btn-md btn-primary">Sent Mail</a>
+			      </td>
 			    </tr>
 
 				<?php
 
 				}
   			}
-  			if($do == 'number'){
+  			else if($do == 'number'){
 
   				if($_SERVER['REQUEST_METHOD'] == 'POST'){
   					$car_number = $_POST['v_number'];
   					
-  			$sql = "INSERT INTO fault_info (number_plate) VALUES ('$car_number')";
-			$result = mysqli_query($conn, $sql);
+		  			$sql = "INSERT INTO fault_info (number_plate) VALUES ('$car_number')";
+					$result = mysqli_query($conn, $sql);
 
-			if($result){
-				header('Location: dashboard.php');
-			}else{
-				echo "Add New User Error!";
-			}
+					if($result){
+						header('Location: dashboard.php');
+					}else{
+						echo "Add New User Error!";
+					}
 
-			}
+				}
+  			}
+  			else if($do == 'mail'){
+
+  				if(isset($_GET['userid'])){
+  					$usermail = $_GET['userid'];
+
+  					require 'PHPMailerAutoload.php';
+					require 'pass.php';
+
+					$mail = new PHPMailer;
+
+					// $mail->SMTPDebug = 4;                               // Enable verbose debug output
+
+					$mail->isSMTP();                                      	// Set mailer to use SMTP
+					$mail->Host = 'smtp.gmail.com';  						// Specify main and backup SMTP servers
+					$mail->SMTPAuth = true;                               // Enable SMTP authentication
+					$mail->Username = EMAIL;                				 // SMTP username
+					$mail->Password = PASS;                           		// SMTP password
+					$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+					$mail->Port = 587;                                    // TCP port to connect to
+
+					$mail->setFrom(EMAIL, 'NumberPlate');
+					//$mail->addAddress($_POST['email']);     			// Add a recipient
+					$mail->addAddress($usermail);     			// Add a recipient
+
+					$mail->addReplyTo(EMAIL);
+					// print_r($_FILES['file']); exit;
+					// for ($i=0; $i < count($_FILES['file']['tmp_name']) ; $i++) { 
+					// 	$mail->addAttachment($_FILES['file']['tmp_name'][$i], $_FILES['file']['name'][$i]);    
+					// }
+					$mail->isHTML(true);                                  
+
+					$mail->Subject = 'Traffic Rules Violation Report.';
+					$mail->Body    = '<h1>Hello Sir/Mam, <br> You just broke the traffic rules. According our traffice rules, You have to pay  bdt-1200/taka within next 7 working days. <br> Otherwise we will complain against you in your local police station. <br> Thank You. <br>  </h1>';
+					$mail->AltBody = 'Traffic Rules Violation Report.';
+
+					if(!$mail->send()) {
+					    echo 'Message could not be sent.';
+					    echo 'Mailer Error: ' . $mail->ErrorInfo;
+					    header('Location: dashboard.php');
+					} else {
+					    echo 'Message has been sent';
+					}
   				}
+
+  				
+  			}
 
   				
   			

@@ -53,6 +53,8 @@
 		</div>
 	</form>
 
+	<button class="btn btn-md btn-danger"><a href="dashboard.php" style="color: white;text-decoration: none">Back to Home</a></button>
+
 	<?php 
 
 		if(isset($_POST['submit'])){
